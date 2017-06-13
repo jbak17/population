@@ -18,7 +18,7 @@ package population
     /*
         SETUP CONDITIONS
      */
-    val iterations: Int = 50
+    val iterations: Int = 10
     val initial_population: Int = 1400 //in thousands
     val births_per_woman: Double = 7.2
     val year_first_birth: Int = 17
@@ -92,10 +92,14 @@ package population
     def survives(person: Human): Boolean = if ((person.age < life_expectancy && nextDouble() > chance_of_early_death) || (person.age > life_expectancy && nextDouble() > 0.5)) true else false
 
     def main(args: Array[String]) {
-      val society: List[Human] = buildPopulation(initial_population)
-      println(society.length)
-      println(society.head)
-      println("Number of women: " +society.count(h => h.gender == 'F'))
-      println("Number of survivors: " + iterate(iterate(society)).length)
+      var society: List[Human] = buildPopulation(initial_population)
+      var population_size: List[Int] = List(society.size)
+
+      for (i <- 0 to iterations){
+        society = iterate(society)
+        population_size = society.size :: population_size
+
+      }
+      print(population_size.reverse)
     }
   }
